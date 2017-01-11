@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>API - StackOverflow</title>
+		
+		<!-- CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../css/index.css">
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
+		
+		<!-- JS -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+		<script src="../js/index.js"></script>
+	</head>
+	<!-- BODY -->
+	<body>
+	<div class="container-fluid">	
+		<div class="row-fluid" style="margin-top: 10px;">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<h2>JavaScript - StackOverflow</h2>
+				<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 well col-centered">
+					<h3>Buscar na API</h3>
+					<form class="form-inline">
+						<div class="form-group">
+							<label for="page">Page</label><br>
+							<input type="number" class="form-control" id="page" placeholder="Page">
+						</div>
+						<div class="form-group">
+							<label for="rpp">RPP</label><br>
+							<input type="mumber" class="form-control" id="rpp" placeholder="rpp">
+						</div>
+						<div class="form-group">
+							<label for="srot">Sort</label><br>
+							<select class="form-control" id="sort" placeholder="sort" style="width: 196px;">
+								<option value="activity">activity</option>
+								<option value="votes">votes</option>
+								<option value="creation">creation</option>
+								<option value="hot">hot</option>
+								<option value="week">week</option>
+								<option value="month">month</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="score">Score</label><br>
+							<input type="text" class="form-control" id="score" placeholder="score">
+						</div>
+						<br>
+						<br>
+						<button type="submit" class="btn btn-success btn-lg pull-right" id="buscarDados">Buscar</button>
+						<br>
+						<p class="text-center" id="statusBusca"></p>
+					</form>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<table class="table table-bordered bs-docs-tooltip-examples table-hover" id="tabelaPerguntas" style="display:none;">
+  					<thead>
+  						<tr class="success">
+							<th class="td-center">ID</th>
+ 							<th class="td-center">Título</th>
+ 		 					<th class="td-center">Autor</th>
+ 		 					<th class="td-center">Pontuação</th>
+ 	 					</tr>
+ 	 				</thead>
+ 	 				<tbody id="tabelaFilho">
+ 	 				</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	</body>
+
+</html>
