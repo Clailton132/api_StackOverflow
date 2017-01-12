@@ -1,5 +1,17 @@
 $('document').ready(function(){
 
+	 //Inicializa o dataTables (variavel que recebe a tabela
+    dataTable = null;
+	
+	//Desabilita o input score caso o option selecionado não seja o vote
+	$('#sort').change(function(){
+		if($('#sort').val() != 'votes'){
+			$("#score").prop('disabled', true);
+			$("#score").val('');
+		} else {
+			$("#score").prop('disabled', false);
+		}
+	});
 	$('#buscarDados').click(function(){
 		///2.2/questions?page=10&pagesize=5&order=asc&sort=votes&site=stackoverflow
 		var link = "page="+$('#page').val()+
@@ -23,6 +35,7 @@ $('document').ready(function(){
 	 		},
 	 		success:function (data){
 				console.log(data);
+				montarTabela(data)
 				$('#statusBusca').text('Dados buscados com sucesso!').css('color','green').show();
 			},
 			error: function (data){
@@ -36,6 +49,10 @@ $('document').ready(function(){
 	function montarTabela(jsonResponse){
 		var itens = jsonResponse.items;
 		
+		if(dataTable != null){
+			dataTable.destroy();
+		};
+		 
 		$('#tabelaPerguntas').show();
 		
 		dataTable = $('#tabelaPerguntas').DataTable({   
