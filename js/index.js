@@ -1,6 +1,6 @@
 $('document').ready(function(){
 
-	 //Inicializa o dataTables (variavel que recebe a tabela
+	 //Inicializa o dataTables (variavel que recebe a tabela)
     dataTable = null;
 	
 	//Desabilita o input score caso o option selecionado não seja o vote
@@ -12,6 +12,7 @@ $('document').ready(function(){
 			$("#score").prop('disabled', false);
 		}
 	});
+	//Faz uma busca ao clicar o botão "Buscar" caso todos os requisitos sejam atentidos.
 	$('#buscarDados').click(function(){
 		
 		//Verifica as precedencias de page e rpp conforme solicitado.
@@ -38,7 +39,8 @@ $('document').ready(function(){
 		if($('#sort').val() != ''){
 			link += "&sort="+$('#sort').val();
 		}
-				
+		
+		//Callback via ajax.
 		$.ajax({
 	 		type: 'POST',
 	 		url: "http://api.stackexchange.com/2.2/questions?order=desc"+link+"&site=stackoverflow",
@@ -47,37 +49,44 @@ $('document').ready(function(){
 	 		processData: false,
 	 		dataType: 'jsonp',
 	 		beforeSend: function(){
+				//Feedback informando que a busca está sendo feita.
 				$('#statusBusca').text('Dados sendos buscados.....').css('color','blue').show();
 	 		},
 	 		success:function (data){
 				console.log(data);
 				montarTabela(data)
+				//Feedback informando que a busca foi bem sucessida.
 				$('#statusBusca').text('Dados buscados com sucesso!').css('color','green').show();
 			},
 			error: function (data){
 				console.log(data);
+				//Feedback informando que houve um problema na busca.
 				$('#statusBusca').text('Erro ao tentar buscar os dados solicitados!').css('color','red').show();
 			}
 		});
 		return false;
 	});
 	
+	//Função que monta a tabela de resultados.
 	function montarTabela(jsonResponse){
-		var itens = jsonResponse.items;
+		
+		var itens = ;
 		
 		if(dataTable != null){
 			dataTable.destroy();
 		};
-		
+		//Mostra a tabela.
 		$('#tabelaPerguntas').show();
 		
 		dataTable = $('#tabelaPerguntas').DataTable({   
+			//Importa a linguagem pt-BR
 			"language": {
 				"url": "http://cdn.datatables.net/plug-ins/1.10.13/i18n/Portuguese-Brasil.json"
 			},
-			"scrollX": false,
+			//Sem paginação.
 			"paging": false,
-			"data": itens,
+			//Recebe os itens para montagem da tabela.
+			"data": jsonResponse.items,
 			"columns": [
 				{"data": "question_id", "class": "td-center"},
 				{"data": function(data){
@@ -88,7 +97,6 @@ $('document').ready(function(){
 					}, "class": "td-center"},
 				{"data": "score", "class": "td-center"},
 			],
-			
             "destroy": true
 		});
 	};

@@ -1,5 +1,8 @@
+/* Alinhamento usado para centralizar o elemento*/
 .col-centered{
    	float: none;
    	margin: 0 auto;
 }
+
+/* Centraliza os elemento da tabela*/
 .td-center {text-align: center;}
