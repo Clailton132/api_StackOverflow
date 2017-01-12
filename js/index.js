@@ -17,11 +17,15 @@ $('document').ready(function(){
 		
 		//Verifica as precedencias de page e rpp conforme solicitado.
 		if($('#page').val() != '' && $('#rpp').val() == ''){
-			$('#statusBusca').text('É necessário preencher o campo RPP caso tenha inserido algum valor no campo PAGE').css('color','red').show();
+			$('#statusBusca').text('É necessário preencher o campo RPP caso tenha inserido algum valor no campo PAGE!').css('color','red').show();
 			return false;
 		}
 		if($('#page').val() == '' && $('#rpp').val() != ''){
-			$('#statusBusca').text('É necessário preencher o campo PAGE caso tenha inserido algum valor no campo RPP').css('color','red').show();
+			$('#statusBusca').text('É necessário preencher o campo PAGE caso tenha inserido algum valor no campo RPP!').css('color','red').show();
+			return false;
+		}
+		if($('#sort').val() == 'vote' && $('#score').val() == ''){
+			$('#statusBusca').text('É necessário preencher o campo SCORE!').css('color','red').show();
 			return false;
 		}
 		var link = "";
@@ -54,9 +58,19 @@ $('document').ready(function(){
 	 		},
 	 		success:function (data){
 				console.log(data);
-				montarTabela(data)
-				//Feedback informando que a busca foi bem sucessida.
-				$('#statusBusca').text('Dados buscados com sucesso!').css('color','green').show();
+				if(data.hasOwnProperty('items')){
+					montarTabela(data)
+					//Feedback informando que a busca foi bem sucessida.
+					$('#statusBusca').text('Dados buscados com sucesso!').css('color','green').show();
+				} else {
+					//Feedback informando que a busca foi bem sucessida.
+					$('#statusBusca').text('Erro ao buscar os dados. Verifique todos os parâmetros!').css('color','red').show();
+					if(dataTable != null){
+						dataTable.destroy();
+					};
+					$('#tabelaPerguntas').hide();
+				}
+				
 			},
 			error: function (data){
 				console.log(data);
@@ -69,12 +83,7 @@ $('document').ready(function(){
 	
 	//Função que monta a tabela de resultados.
 	function montarTabela(jsonResponse){
-		
-		var itens = ;
-		
-		if(dataTable != null){
-			dataTable.destroy();
-		};
+
 		//Mostra a tabela.
 		$('#tabelaPerguntas').show();
 		
