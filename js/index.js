@@ -13,21 +13,37 @@ $('document').ready(function(){
 		}
 	});
 	$('#buscarDados').click(function(){
-		///2.2/questions?page=10&pagesize=5&order=asc&sort=votes&site=stackoverflow
-		var link = "page="+$('#page').val()+
-				"&pagesize="+$('#rpp').val()+
-				"&min="+$('#score').val()+
-				"&sort="+$('#sort').val();
+		
+		//Verifica as precedencias de page e rpp conforme solicitado.
+		if($('#page').val() != '' && $('#rpp').val() == ''){
+			$('#statusBusca').text('É necessário preencher o campo RPP caso tenha inserido algum valor no campo PAGE').css('color','red').show();
+			return false;
+		}
+		if($('#page').val() == '' && $('#rpp').val() != ''){
+			$('#statusBusca').text('É necessário preencher o campo PAGE caso tenha inserido algum valor no campo RPP').css('color','red').show();
+			return false;
+		}
+		var link = "";
+		
+		//Insere apenas as tag que contem valor a ser enviado.
+		if($('#page').val() != ''){
+			link += "&page="+$('#page').val();
+		}
+		if($('#rpp').val() != ''){
+			link += "&pagesize="+$('#rpp').val();
+		}
+		if($('#score').val() != ''){
+			link += "&min="+$('#score').val();
+		}
+		if($('#sort').val() != ''){
+			link += "&sort="+$('#sort').val();
+		}
 				
 		$.ajax({
 	 		type: 'POST',
-	 		url: "http://api.stackexchange.com/2.2/questions?"+link+"&site=stackoverflow",
-	 		//data: formData,
+	 		url: "http://api.stackexchange.com/2.2/questions?order=desc"+link+"&site=stackoverflow",
 	 		cache: false,
 	 		contenType: 'application/x-www-form-urlencoded',
-	 		/*headers: { 
-	 					'Authorization':'Bearer '+document.getElementById('token').value,
-	 			    },*/
 	 		processData: false,
 	 		dataType: 'jsonp',
 	 		beforeSend: function(){
@@ -52,7 +68,7 @@ $('document').ready(function(){
 		if(dataTable != null){
 			dataTable.destroy();
 		};
-		 
+		
 		$('#tabelaPerguntas').show();
 		
 		dataTable = $('#tabelaPerguntas').DataTable({   
