@@ -32,4 +32,31 @@ $('document').ready(function(){
 		});
 		return false;
 	});
+	
+	function montarTabela(jsonResponse){
+		var itens = jsonResponse.items;
+		
+		$('#tabelaPerguntas').show();
+		
+		dataTable = $('#tabelaPerguntas').DataTable({   
+			"language": {
+				"url": "http://cdn.datatables.net/plug-ins/1.10.13/i18n/Portuguese-Brasil.json"
+			},
+			"scrollX": false,
+			"paging": false,
+			"data": itens,
+			"columns": [
+				{"data": "question_id", "class": "td-center"},
+				{"data": function(data){
+					return "<a href='"+data.owner.link+"' target='_blank'>"+data.owner.display_name+"</a>";
+					}, "class": "td-center"},
+ 	            {"data": function(data){
+					return "<a href='"+data.link+"' target='_blank'>"+data.title+"</a>";
+					}, "class": "td-center"},
+				{"data": "score", "class": "td-center"},
+			],
+			
+            "destroy": true
+		});
+	};
 });
